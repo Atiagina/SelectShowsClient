@@ -13,6 +13,10 @@ public partial class _Default : System.Web.UI.Page
     {
         if (!IsPostBack) { 
         LoadDropDown();
+        LoadBulletedArtists();
+        LoadBulletedShows();
+        LoadBulletedVenues();
+        LoadDropDown2();
         }
     }
     protected void DropDownListShow_SelectedIndexChanged(object sender, EventArgs e)
@@ -35,5 +39,55 @@ public partial class _Default : System.Web.UI.Page
         GridViewShows.DataBind();
 
     
+    }
+    protected void DropDownListShowArtist_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        FillGrid2();
+    }
+    protected void BulletedListArtists_Click(object sender, BulletedListEventArgs e)
+    {
+
+    }
+
+    protected void LoadBulletedArtists()
+    {
+        string[] artists = db.GetArtists();
+        BulletedListArtists.DataSource = artists;
+        BulletedListArtists.DataBind();
+
+    }
+
+    protected void LoadBulletedShows()
+    {
+        string[] shows = db.GetShows();
+        BulletedListShows.DataSource = shows;
+        BulletedListShows.DataBind();
+
+    }
+
+    protected void LoadBulletedVenues()
+    {
+        string[] venues = db.GetVenues();
+        BulletedListVenues.DataSource = venues;
+        BulletedListVenues.DataBind();
+
+    }
+
+    protected void LoadDropDown2()
+    {
+        string[] artists = db.GetArtists();
+        DropDownListShowArtist.DataSource = artists;
+        DropDownListShowArtist.DataBind();
+        DropDownListShowArtist.Items.Insert(0, "Choose an Artist");
+
+    }
+
+    protected void FillGrid2()
+    {
+        string artist = DropDownListShowArtist.SelectedItem.Text;
+        SelectShowsReference.ShowLite[] shows = db.GetShowByArtist(artist);
+        GridViewArtists.DataSource = shows;
+        GridViewArtists.DataBind();
+
     }
 }
